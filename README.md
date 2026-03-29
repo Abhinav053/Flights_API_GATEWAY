@@ -34,12 +34,10 @@ This system is built to handle real-world airline booking traffic, supporting hu
 9. [Authentication & Authorization](#authentication--authorization)
 10. [API Endpoints Documentation](#api-endpoints-documentation)
 11. [Running the Application](#running-the-application)
-12. [Docker Setup & Deployment](#docker-setup--deployment)
-13. [User Roles & Permissions](#user-roles--permissions)
-14. [Database Models & Relationships](#database-models--relationships)
-15. [Error Handling](#error-handling)
-16. [Best Practices](#best-practices)
-17. [Common Issues & Solutions](#common-issues--solutions)
+12. [User Roles & Permissions](#user-roles--permissions)
+13. [Database Models & Relationships](#database-models--relationships)
+14. [Best Practices](#best-practices)
+15. [Common Issues & Solutions](#common-issues--solutions)
 
 ---
 
