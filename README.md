@@ -152,38 +152,28 @@ The API Gateway acts as a single entry point for client applications, providing:
 
 ---
 
-## Technology Stack
+---
 
-### Backend Framework & Server
-| Component | Purpose | Version |
-|-----------|---------|---------|
-| **Express.js** | Web server framework | 4.18.2 |
-| **Node.js** | JavaScript runtime | Latest |
-| **Nodemon** | Development auto-reload | 2.0.22 |
+## 💻 Technology Stack
 
-### Database & ORM
-| Component | Purpose | Version |
-|-----------|---------|---------|
-| **MySQL2** | MySQL database driver | 3.2.4 |
-| **Sequelize** | ORM for database operations | 6.31.1 |
-| **Sequelize CLI** | Database migrations & seeders | 6.6.0 |
-
-### Authentication & Security
-| Component | Purpose | Version |
-|-----------|---------|---------|
-| **bcrypt** | Password hashing | 5.1.0 |
-| **jsonwebtoken** | JWT token management | 9.0.0 |
-| **express-rate-limit** | Rate limiting middleware | 6.7.0 |
-
-### Configuration & Utilities
-| Component | Purpose | Version |
-|-----------|---------|---------|
-| **dotenv** | Environment variable management | 16.0.3 |
-| **http-proxy-middleware** | Request proxying | 2.0.6 |
-| **http-status-codes** | HTTP status code constants | 2.2.0 |
-| **Winston** | Logging library | 3.8.2 |
+| Technology | Purpose | Rationale |
+|---|---|---|
+| **Node.js** | Runtime environment | Non-blocking I/O, excellent for I/O-heavy microservices |
+| **Express.js** | Web framework | Lightweight, modular, industry-standard for microservices |
+| **MySQL** | Relational database | ACID compliance for transactional consistency in bookings |
+| **Sequelize ORM** | Database abstraction | Type-safe queries, migrations, seed management |
+| **RabbitMQ** | Message broker | Reliable asynchronous communication with delivery guarantees |
+| **node-cron** | Job scheduling | Lightweight, in-process scheduling for reminders |
+| **Nodemailer** | Email service | Simple SMTP integration for notification delivery |
+| **express-rate-limit** | Rate limiting | Protects APIs from abuse and DoS attacks |
+| **http-proxy-middleware** | Request routing | Efficient proxying in API Gateway |
+| **Morgan** | HTTP logging | Request/response logging for observability |
+| **PM2** | Process manager | Cluster mode for horizontal scaling on single machines |
+| **AWS Auto Scaling** | Cloud scaling | Dynamic scaling based on CloudWatch metrics |
+| **JWT** | Authentication | Stateless, scalable authentication mechanism |
 
 ---
+
 
 ## Project Structure Explained
 
