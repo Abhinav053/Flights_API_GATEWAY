@@ -1,4 +1,26 @@
-# API Gateway for Flights - Comprehensive Documentation
+# ✈️ AirlineBookingSystem
+
+> **A production-oriented, scalable microservices architecture designed to power a comprehensive airline booking platform.**
+
+Built with Node.js, this system handles flight management, authentication, booking lifecycle, and asynchronous notifications with enterprise-grade reliability and horizontal scalability.
+
+---
+
+## 🏗️ Project Overview
+
+AirlineBookingSystem is engineered following modern backend architecture principles:
+
+- **API Gateway Pattern** – Centralized entry point for all client requests with intelligent routing
+- **Microservices Architecture** – Independently deployable services with clear boundaries of responsibility
+- **Asynchronous Communication** – Event-driven architecture using RabbitMQ for loose coupling
+- **Horizontal Scaling** – Stateless services enabling seamless scaling across multiple instances
+- **Centralized Authentication** – JWT-based authentication with role-based access control (RBAC)
+- **Cloud-Ready** – Designed for AWS Auto Scaling and containerization
+
+This system is built to handle real-world airline booking traffic, supporting hundreds of concurrent users with sub-second response times and guaranteed message delivery for critical operations.
+
+---
+
 
 ## 📋 Table of Contents
 1. [Project Overview](#project-overview)
@@ -21,14 +43,6 @@
 
 ---
 
-## Project Overview
-
-### What is this Project?
-
-This is an **API Gateway** application built with Node.js and Express that serves as a central hub for managing user authentication, authorization, and routing requests to microservices. Specifically, it's designed for a **Flight Booking System** that routes requests to:
-
-- **Flight Service** (handles flights data)
-- **Booking Service** (handles booking operations)
 
 ### Purpose
 
@@ -983,107 +997,7 @@ curl -X POST http://localhost:3000/api/v1/user/role \
 
 ---
 
-## Docker Setup & Deployment
 
-### What is Docker?
-Docker containerizes your application so it runs the same everywhere (dev, staging, production).
-
-### Prerequisites
-- Install [Docker Desktop](https://www.docker.com/products/docker-desktop)
-- Docker should be running
-
-### Building the Docker Image
-
-**Step 1: Build the image**
-```bash
-docker build -t api-gateway .
-```
-
-**Step 2: Create Docker network**
-```bash
-docker network create micro-net
-```
-
-This network allows containers to communicate with each other.
-
-**Step 3: Create volume for node_modules**
-```bash
-docker volume create api-gateway-node-modules
-```
-
-Volumes persist data between container restarts.
-
-**Step 4: Run the container**
-```bash
-docker run -it --init \
-  -p 3001:3001 \
-  --name=api_gateway \
-  --network micro-net \
-  -v "$(pwd)":/developer/nodejs/api-gateway \
-  -v api-gateway-node-modules:/developer/nodejs/api-gateway/node_modules \
-  api-gateway:latest
-```
-
-**Parameter Explanation:**
-| Parameter | Meaning |
-|-----------|---------|
-| `-it` | Interactive terminal |
-| `--init` | Use init process (prevents zombie processes) |
-| `-p 3001:3001` | Map port 3001 (host:container) |
-| `--name` | Container name |
-| `--network` | Connect to network |
-| `-v` | Mount volume (host:container path) |
-
-**Access the running container:**
-```bash
-docker exec -it api_gateway bash
-# Now you can run commands inside the container
-```
-
-**Stop the container:**
-```bash
-docker stop api_gateway
-```
-
-**Remove the container:**
-```bash
-docker rm api_gateway
-```
-
-### Docker Compose (Optional)
-Create `docker-compose.yml` for easier management:
-
-```yaml
-version: '3.8'
-services:
-  api-gateway:
-    build: .
-    container_name: api_gateway
-    ports:
-      - "3001:3001"
-    volumes:
-      - .:/developer/nodejs/api-gateway
-      - api-gateway-node-modules:/developer/nodejs/api-gateway/node_modules
-    networks:
-      - micro-net
-    environment:
-      - NODE_ENV=development
-      - PORT=3001
-
-volumes:
-  api-gateway-node-modules:
-
-networks:
-  micro-net:
-    driver: bridge
-```
-
-Then run:
-```bash
-docker-compose up
-```
-
----
 
 ## User Roles & Permissions
 
@@ -1354,133 +1268,7 @@ const JWT_SECRET = process.env.JWT_SECRET
 echo ".env" >> .gitignore
 ```
 
-### Performance Best Practices
 
-1. **Database Indexing**
-   ```sql
-   -- Create index on frequently queried fields
-   CREATE INDEX idx_user_email ON users(email);
-   ```
-
-2. **Pagination** (implement in services)
-   ```javascript
-   async function getUsers(page, limit) {
-     return User.findAll({
-       offset: (page - 1) * limit,
-       limit: limit
-     });
-   }
-   ```
-
-3. **Caching** (consider Redis for sessions)
-   ```javascript
-   // Don't fetch user from DB every time
-   // Cache after first fetch
-   ```
-
-4. **Query Optimization**
-   - Use `include` in Sequelize to avoid N+1 queries
-   - Select only needed fields
-   - Use pagination
-
----
-
-## Common Issues & Solutions
-
-### Issue 1: "Cannot find module 'express'"
-**Cause:** Dependencies not installed
-
-**Solution:**
-```bash
-npm install
-```
-
----
-
-### Issue 2: "ECONNREFUSED: Connection refused to 127.0.0.1:3306"
-**Cause:** MySQL server not running
-
-**Solution (Windows):**
-```bash
-# Start MySQL service
-net start MySQL80
-
-# Or through Services app
-# Search → Services → MySQL80 → Start
-```
-
-**Solution (Mac):**
-```bash
-mysql.server start
-```
-
-**Solution (Linux):**
-```bash
-sudo systemctl start mysql
-```
-
----
-
-### Issue 3: "Database 'flights_db' doesn't exist"
-**Cause:** Database not created
-
-**Solution:**
-```bash
-mysql -u root -p
-CREATE DATABASE flights_db;
-EXIT;
-
-npx sequelize db:migrate
-npx sequelize db:seed:all
-```
-
----
-
-### Issue 4: "listen EADDRINUSE: address already in use :::3000"
-**Cause:** Port 3000 already in use
-
-**Solution:**
-```bash
-# Windows: Find and kill process on port 3000
-netstat -ano | findstr :3000
-taskkill /PID <PID> /F
-
-# Mac/Linux:
-lsof -i :3000
-kill -9 <PID>
-
-# Or use a different port in .env
-PORT=3001
-```
-
----
-
-### Issue 5: "Invalid JWT token"
-**Cause:** Token expired or corrupted
-
-**Solution:**
-```bash
-# Get a new token by signing in again
-POST /api/v1/user/signin
-```
-
----
-
-### Issue 6: "bcrypt not compiling on Windows"
-**Cause:** Missing build tools
-
-**Solution:**
-```bash
-# Install windows-build-tools globally
-npm install --global windows-build-tools
-
-# Then reinstall bcrypt
-npm rebuild bcrypt
-```
-
----
-
-## Advanced Topics
 
 ### Extending with New Endpoints
 
@@ -1521,19 +1309,7 @@ app.use((req, res, next) => {
 
 ---
 
-### Database Backup & Restore
 
-**Backup:**
-```bash
-mysqldump -u root -p flights_db > backup.sql
-```
-
-**Restore:**
-```bash
-mysql -u root -p flights_db < backup.sql
-```
-
----
 
 ## Conclusion
 
@@ -1560,14 +1336,5 @@ This API Gateway provides a **production-ready foundation** for building microse
 - **Sequelize ORM:** https://sequelize.org/
 - **JWT Introduction:** https://jwt.io/introduction
 - **bcrypt Security:** https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html
-- **Docker Guide:** https://docs.docker.com/
 
----
 
-**Created:** 2023
-**Version:** 1.0.0
-**Author:** Sanket
-
----
-
-*Last Updated: March 2026*
