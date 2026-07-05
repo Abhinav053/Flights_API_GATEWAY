@@ -6,10 +6,9 @@ const { ServerConfig } = require('./config');
 const apiRoutes = require('./routes');
 const app = express();
 
-const limiter = rateLimit({
-	windowMs: 2 * 60 * 1000, // 2 minutes
-	max: 30, // Limit each IP to 2 requests per `window` (here, per 15 minutes)
-});
+const tokenBucket = require("./middlewares/tokenBucket");
+
+app.use(tokenBucket);
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
